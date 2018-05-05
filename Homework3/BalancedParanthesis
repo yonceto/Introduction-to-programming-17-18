@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+// function to check if paranthesis are balanced
+bool checkParanthesis(char* expr, int n, int count) {
+	//If count is < 0 return false
+	if (count < 0) {
+		return false;
+	}
+	if (expr[n] == '\0')
+	{
+		return count == 0;
+	}
+	//If the n-th element is left bracket increment count
+	if (expr[n] == '(')
+	{
+		count++;
+	}
+	//If the n-th element is right bracket decrement count
+	if (expr[n] == ')')
+	{
+		count--;
+	}
+	//Return function value of n+1-th element
+	return checkParanthesis(expr, n + 1, count);
+}
+	int main()
+	{
+		char* input = new char[10001]; 
+		cin.getline(input, 10001);
+		if (checkParanthesis(input, 0, 0) == true) {
+			cout << "Correct";
+		}
+		else {
+			cout << "Incorrect";
+		}
+		return 0;
+	}
