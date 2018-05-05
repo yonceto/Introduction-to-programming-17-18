@@ -1,0 +1,133 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <string>
+
+using namespace std;
+// Functions
+/* Takes the input character and the secret word, and fill in the
+unfinished guessword.*/
+int letterFill(char guess, char* secretword, char* guessword)
+{
+	int i;
+	int matches = 0;
+	int len = strlen(secretword);
+	for (i = 0; i < len; i++)
+	{
+		//If the user already said the charather
+		if (guess == guessword[i])
+			return 0;
+		// See if character is in the word
+		if (guess == secretword[i])
+		{
+			guessword[i] = guess;
+			matches++;
+		}
+	}
+	return matches;
+}
+
+//Fill the guessword with the character that is guessed by the user
+int letterFill(char, char*, char*);
+int main()
+{
+	char letter;
+	int max_tries = 0;
+	int num_of_wrong_guesses = 0;
+	char* word;
+	//The array of all the words in the game
+	char words[][30] =
+	{
+		"apple",
+		"watermelon",
+		"pineapple",
+		"lemonade",
+		"tequila",
+		"cocktail",
+		"refrigerator",
+		"student",
+		"atmosphere",
+		"university",
+		"student",
+		"computer",
+		"christmas",
+		"snowman",
+		"snowboard",
+		"mistletoe",
+		"cinnamon",
+		"lavender",
+		"strawbery",
+		"bubblegum",
+		"flamingo",
+		"thunderstorm",
+		"rainbow",
+		"reindeer",
+		"pinetree",
+		"orchid",
+		"vanilla",
+		"amnesia"
+		"obssession",
+		"skyscraper",
+		"dreamcatcher"
+	};
+	//Choose a random word from the array
+	srand(time(NULL));
+	int n = rand() % 10 + 20;
+	word = words[n];
+	// Initialize the secret word with the _ character.
+	int wordLength = strlen(word);
+	char* guessWord = new char[wordLength + 1];
+	memset(guessWord, '_', wordLength);
+	guessWord[wordLength] = '\0';
+	char firstLetter = word[0];
+	char lastLetter = word[wordLength - 1];
+	if (letterFill(firstLetter, word, guessWord) != 0) {
+	}
+	if (letterFill(lastLetter, word, guessWord) != 0) {
+	}
+	//Say welcome the user
+	cout << "Welcome to hangman!! Guess a word that comes into your mind." << endl;
+	cout << "Each letter is represented by a lower dash." << endl;
+	cout << "You have to type only one letter in one try." << endl;
+	//Let the user choose how many tries to have
+	cout << "Enter number of tries you want to have: " << endl;
+	cin >> max_tries;
+	// Loop for gueesing the word until the number of tries is used
+	while (num_of_wrong_guesses < max_tries)
+	{
+		cout << guessWord << endl;
+		cout << "Guess a letter: " << endl;
+		cin >> letter;
+		if (isupper(letter)) {
+			letter = tolower(letter);
+		}
+		// Fill secret word with letter if the guess is correct,
+		// otherwise increment the number of wrong guesses.
+		if (letterFill(letter, word, guessWord) == 0)
+		{
+			cout << endl << "Error!" << endl;
+			num_of_wrong_guesses++;
+		}
+		else
+		{
+			cout << endl << "Success!" << endl;
+		}
+		// Tell user how many guesses he has left.
+		cout << "Attempts left :" << max_tries - num_of_wrong_guesses << endl;
+		// Check if user guessed the word.
+		if (strcmp(word, guessWord) == 0)
+		{
+			cout << "Congratulations, you win!" << endl;
+
+			cout << "The word is '" << word << "'" << endl;
+
+			break;
+		}
+	}
+	if (num_of_wrong_guesses == max_tries)
+	{
+		cout << "Sorry, you lose...you've been hanged." << endl;
+		cout << "The word was : " << *word << endl;
+	}
+	return 0;
+}
