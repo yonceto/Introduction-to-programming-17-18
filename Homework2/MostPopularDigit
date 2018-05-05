@@ -1,0 +1,68 @@
+#include<iostream>
+#include<cstdlib>
+using namespace std;
+
+//Function to calculate number of digits
+int calculateNumberOfDigits(int n) {
+	return (int)(log10(abs(n))) + 1;
+}
+//Function to find the most popular digit in a number and its frequency
+int getPopularElement(int number[], int arrSize)
+{
+
+	int max_count = 0;
+	for (int i = 0; i < arrSize; i++)
+	{
+		int count = 1;
+		for (int j = i + 1; j < arrSize; j++)
+		{
+			if (number[i] == number[j])
+				count++;
+		}
+		if (count>max_count)
+			max_count = count;
+	}
+
+	for (int i = 0; i < arrSize; i++)
+	{
+		int count = 1;
+		for (int j = i + 1; j < arrSize; j++)
+		{
+			if (number[i] == number[j]) {
+				count++;
+			}
+		}
+		if (count == max_count) {
+			cout << number[i] << " -> " << max_count << endl;
+		}
+	}
+	return 1;
+}
+
+int main() {
+	int inputNum = 0;
+	long long limit = pow(2, 32);
+	cin >> inputNum;
+	if (inputNum >= -limit && inputNum <= limit)
+	{
+		if (inputNum < 0)
+		{
+			inputNum = abs(inputNum);
+		}
+		int numberOfDigits = calculateNumberOfDigits(inputNum);
+		int numberArr[100];
+		//Each digit of the input number is stored inside the array 
+		for (int i = 0; i <= numberOfDigits - 1; i++)
+		{
+			int moduleOfTen = (int)(pow(10, (numberOfDigits - i - 1)));
+			numberArr[i] = inputNum / moduleOfTen;
+			inputNum = inputNum % moduleOfTen;
+		}
+		getPopularElement(numberArr, numberOfDigits);
+	}
+	else {
+		cout << -1 << endl;
+	}
+	return 0;
+
+}
