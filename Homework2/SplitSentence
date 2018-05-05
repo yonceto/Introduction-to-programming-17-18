@@ -1,0 +1,101 @@
+#include<iostream>
+#include <cstring>
+
+using namespace std;
+//Character array(it is a sign for the end of a word in a sentence)
+const char signs[] = { '.', ',', '!', '?', ';', ':', '|' };
+const short signCount = 7;
+//Functions
+//Checks if a character is from the character array
+bool isSign(char ch) {
+	for (int i = 0; i < signCount; i++)
+	{
+		if (signs[i] == ch) {
+			return true;
+		}
+	}
+	return false;
+}
+//Prints the pattern of the output
+void printPattern(char words[][60], int count) {
+	int maxLength = 0;
+	for (int i = 0; i < count; i++) {
+		int currentSize = strlen(words[i]);
+		if (currentSize > maxLength)
+		{
+			maxLength = currentSize;
+		}
+	}
+
+	for (int i = 1; i <= maxLength + 2; i++)
+	{
+		cout << '-';
+	}
+	cout << endl;
+	for (int i = 0; i < count; i++)
+	{
+		int currentSize = strlen(words[i]);
+		cout << '|';
+		cout << words[i];
+
+		for (int j = 0; j < maxLength - currentSize; j++)
+		{
+			cout << ' ';
+		}
+		cout << '|' << endl;
+	}
+
+	for (int i = 1; i <= maxLength + 2; i++)
+	{
+		cout << '-';
+	}
+	cout << endl;
+}
+//Splits sentence into words based on whitespace and characters from the character aray
+void splitSentence(char* sentence)
+{
+	char words[1000][60];
+	int counter = 0;
+
+	char* currentWord = new char[1001];
+	currentWord[0] = '\0';
+	int len = strlen(sentence);
+	int currentWordIndex = 0;
+
+	for (int i = 0; i < len; i++)
+	{
+		if (isSign(sentence[i]))
+		{
+			continue;
+		}
+
+		if (sentence[i] == ' ' || sentence[i] == '\t')
+		{
+			if (strlen(currentWord))
+			{
+				strcpy_s(words[counter], strlen(currentWord) + 1, currentWord);
+				counter++;
+				currentWord[0] = '\0';
+				currentWordIndex = 0;
+			}
+		}
+		else
+		{
+			currentWord[currentWordIndex] = sentence[i];
+			currentWord[currentWordIndex + 1] = '\0';
+			currentWordIndex++;
+		}
+	}
+	printPattern(words, counter);
+}
+
+int main()
+{
+	char input[1002];
+	cin.getline(input, 1000);
+	int len = strlen(input);
+	input[len] = ' ';
+	input[len + 1] = '\0';
+	splitSentence(input);
+	return 0;
+}
