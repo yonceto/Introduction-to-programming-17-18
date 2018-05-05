@@ -1,0 +1,37 @@
+#include<iostream>
+using namespace std;
+int main() {
+	int lastNumber = 0;
+	int currentNumber = 0;
+	bool increasingSequence = false;
+	bool decreasingSequence = false;
+	cout << "Enter a number:";
+	cin >> lastNumber;
+	while (lastNumber > 0) {
+		cin >> currentNumber;
+		if (currentNumber <= 0) {
+			break;
+		}
+		if (currentNumber > lastNumber) {
+			increasingSequence = true;
+		}
+		else if (currentNumber < lastNumber) {
+			decreasingSequence = true;
+		}
+		if (increasingSequence && decreasingSequence) {
+			cout << "Undefined sequence" << endl;
+		}
+		lastNumber = currentNumber;
+	}
+	if (increasingSequence) {
+		cout << "Increasing sequence" << endl;
+	}
+	else if (decreasingSequence) {
+		cout << "Decreasing sequence" << endl;
+	}
+	// If we have one input number the sequence is undefined
+	if (!increasingSequence && !decreasingSequence) {
+		cout << "Undefined sequence" << endl;
+	}
+	return 0;
+}
