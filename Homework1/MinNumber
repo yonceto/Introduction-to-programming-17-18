@@ -1,0 +1,19 @@
+#include<iostream>
+using namespace std;
+int main() {
+	int num = 0;
+	cout << "Enter a number <=0 to end input ";
+	cin >> num;
+	int min = INT32_MAX;
+	if (num <= 0) {
+		cout << "invalid input";
+	}
+	else {
+		while (num > 0) {
+			(num < min) ? min = num : min;
+			cin >> num;
+		}
+		cout << min << endl;
+	}
+	return 0;
+}
