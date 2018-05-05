@@ -1,0 +1,116 @@
+#include <iostream>
+#include <Windows.h>
+#include <ctime>
+using namespace std;
+
+void setXandY(int x, int y)
+{
+	COORD coord;
+	coord.X = x;
+	coord.Y = y;
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+int numberOfStars;
+char nightSky[25][80];
+char starSymbol;
+int starColumns[80];
+int starStartPosition[80];
+int starEndPosition[80];
+int starDeathRows[80];
+
+
+int generateRandomNum(int start, int end)
+{
+	int randNum = rand() % (end - start) + start;
+	return randNum;
+}
+
+void printStarOnSky(int startPosition, int endPosition, int column)
+{
+	for (int i = startPosition; i < endPosition; i++)
+	{
+		nightSky[i][column] = starSymbol;
+	}
+}
+
+void initializeNewStar(int& startPosition, int& endPosition, int& column, int& deathRow)
+{
+	startPosition = 0;
+	endPosition = 6;
+	column = generateRandomNum(0, 80);
+	deathRow = generateRandomNum(6, 25);
+}
+
+void updateStarPosition(int& startPosition, int& endPosition, int column, int deathRow)
+{
+	// Remove first symbol of star
+	nightSky[startPosition][column] = ' ';
+	bool isStarAlive = startPosition < endPosition;
+
+	// Change values for star position start
+	if (isStarAlive)
+	{
+		startPosition++;
+
+		// Change values for star position end
+		if (endPosition < deathRow)
+		{
+			endPosition++;
+		}
+	}
+	else
+	{
+		initializeNewStar(startPosition, endPosition, column, deathRow);
+	}
+}
+
+void printSky()
+{
+	for (int i = 0; i < 25; i++)
+	{
+		for (int j = 0; j < 80; j++)
+		{
+			cout << nightSky[i][j];
+		}
+		cout << endl;
+	}
+}
+
+int main()
+{
+	srand(time(NULL));
+	//User inputs number of stars
+	cout << "Enter number of stars: ";
+	cin >> numberOfStars;
+	//User inputs symbol to print star
+	cout << "Enter star symbol: ";
+	cin >> starSymbol;
+
+	for (int index = 0; index < numberOfStars; index++)
+	{
+		initializeNewStar(starStartPosition[index], starEndPosition[index], starColumns[index], starDeathRows[index]);
+	}
+
+	for (;;)
+	{
+		for (int index = 0; index < numberOfStars; index++)
+		{
+			// Modify star array
+			printStarOnSky(starStartPosition[index], starEndPosition[index], starColumns[index]);
+		}
+
+		Sleep(10);
+		setXandY(0, 0);
+
+		printSky();
+
+		for (int index = 0; index < numberOfStars; index++)
+		{
+			updateStarPosition(starStartPosition[index], starEndPosition[index], starColumns[index], starDeathRows[index]);
+		}
+
+	}
+	return 0;
+}
+
